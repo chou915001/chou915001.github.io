@@ -27,7 +27,7 @@
   text-align: center;
 }
 
-.sehover {
+.sehover:hover {
   background-color: #378FDC;
 }
 
