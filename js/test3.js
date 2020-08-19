@@ -206,7 +206,7 @@ function comp(){
     enable = 1;
     $("#search").css("cursor","pointer");
     $("#search").css("background-color","white");
-    $("#search").addClass("sehover:hover");
+    $("#search").addClass("sehover");
     $("#search").text("Search");
 }
 
