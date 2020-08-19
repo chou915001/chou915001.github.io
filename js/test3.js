@@ -198,7 +198,7 @@ function comp(){
 					if (z < 0) z = 0;
 					z /= 100;
 					
-					FL[v].FIBuy = (all - tmp*z)/100000*100;
+					FL[v].FIBuy = (all - tmp*z)/SP[i].data[16].shares*100;
 					
 				}
 			}
