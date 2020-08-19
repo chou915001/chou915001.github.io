@@ -4,33 +4,50 @@ SP=[];
 PC=[];
 gIdx = 0;
 gArr=[];
+gName = "";
+gSecondName = "";
 
 function startGet(id){
 	seriesCounter = 0;
-	gArr=[id,'ILS'];
 	gIdx = 0;
 	gStockId = id;
+	getIDName(id);
 	Highcharts.getJSON(
-		'https://www.fugle.tw/api/v2/data/contents/FCNT000039?symbol_id=' + gStockId,
+		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000039?symbol_id=' + id,
 		success2
 	);
 	FL=[];
 	SP=[];
 	PC=[];
-	getF(gStockId);
+	
 	
 }
 
+function getIDName(id){
+	$.ajax(
+	  {
+		url:"https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000001?symbol_id=" + id,
+		success: function(res){
+		  res2 = JSON.parse(res.contents);
+		  gName = res2.data.content.rawContent.shortName;
+		  gSecondName = res2.data.content.rawContent.endlishShortName;
+		  gArr=[res2.data.content.rawContent.shortName,'ILS'];
+		  getF(id);
+		}
+	  }
+	)
+}
 
 function getF(id){
 	$.ajax(
 	  {
-		url:"https://www.fugle.tw/api/v2/data/contents/FCNT000005?symbol_id=" + id,
+		url:"https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000005?symbol_id=" + id,
 		success: function(res){
 		  //console.log("F");
 		  //console.log(res.data.content.rawContent);
-		  FL = res.data.content.rawContent;
-		  getSpread(gStockId);
+		  res2 = JSON.parse(res.contents);
+		  FL = res2.data.content.rawContent;
+		  getSpread(id);
 		}
 	  }
 	)
@@ -39,10 +56,12 @@ function getF(id){
 function getSpread(id){
 	$.ajax(
 	  {
-		url:"https://www.fugle.tw/api/v2/data/contents/FCNT000022?symbol_id=" + id,
+		url:"https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000022?symbol_id=" + id,
 		success: function(res){
 		  //console.log("S");
-		  SP = res.data.content.rawContent;
+		  //console.log(res);
+		  res2 = JSON.parse(res.contents);
+		  SP = res2.data.content.rawContent;
 		  //console.log(res.data.content.rawContent)
 		  comp();
 		}
@@ -161,7 +180,8 @@ function comp(){
     seriesOptions[gIdx] = {
 		yAxis: gIdx,
         name: name,
-        data: z
+        data: z,
+		color: gColor[gIdx],
     };
 
     // As we're loading the data asynchronously, we don't know what order it
@@ -175,6 +195,8 @@ function comp(){
 	//console.log("Pdone");
 }
 
+var gColor = ["#000000", "#ff0000"];
+
 var seriesOptions = [],
     seriesCounter = 0;
 
@@ -183,7 +205,11 @@ function createChart() {
     Highcharts.stockChart('container', {
 
 		title: {
-			text: gStockId
+			text: gName + " (" + gStockId + ")"
+		},
+		
+		subtitle: {
+			text: gSecondName + " (" + gStockId + ")"
 		},
 
         rangeSelector: {
@@ -231,17 +257,19 @@ function success(data) {
 
 
 function success2(data) {
-	PC = data.data.content.rawContent;
+	data2 = JSON.parse(data.contents);
+	PC = data2.data.content.rawContent;
 	var name = gArr[gIdx];
 	z=new Array();
-	for(var i=0; i < data.data.content.rawContent.length; i++) {
-	   dt = new Date(data.data.content.rawContent[i].date)
-	   z.push([dt, data.data.content.rawContent[i].close])
+	for(var i=0; i < data2.data.content.rawContent.length; i++) {
+	   dt = new Date(data2.data.content.rawContent[i].date)
+	   z.push([dt, data2.data.content.rawContent[i].close])
 	}
 	//console.log(z);
     seriesOptions[gIdx] = {
         name: name,
         data: z,
+		color: gColor[gIdx],
     };
 
     // As we're loading the data asynchronously, we don't know what order it
