@@ -7,6 +7,18 @@ gArr=[];
 gName = "";
 gSecondName = "";
 enable = 1;
+$("#fname").focus();
+$("#fname").keypress(function(e){
+	code = (e.keyCode ? e.keyCode : e.which);
+	if (code == 13)
+	{
+		$( "#search" ).trigger( "click" );
+	}
+});
+
+$("#fname").click(function(){
+	$("#fname").val("");
+  });
 
 $("#search").mouseenter(function(){
   if (enable == 1)
@@ -28,6 +40,7 @@ function startGet(id){
 	  return;
 	}
 	enable = 0;
+	$("#fname").val("");
 	$("#search").css("cursor","not-allowed");
 	$("#search").css("background-color","gray");
 	$("#search").text("Loading...");
@@ -36,7 +49,7 @@ function startGet(id){
 	gStockId = id;
 	getIDName(id);
 	Highcharts.getJSON(
-		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000039?symbol_id=' + id,
+		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000085?symbol_id=' + id,
 		success2
 	);
 	FL=[];
@@ -155,9 +168,11 @@ function comp(){
 		for (var j = 0; j < 5; j++)
 		{
 			day_get = new Date(day);
+			//console.log(day);
 			day_get.addDays(day_arr[j]);
 			//console.log(day_get);
 			var v = getIdx(FL, day_get, 1);
+			//console.log(v);
 			if (v != -1)
 			{
 				//console.log(FL[v].date);
@@ -183,7 +198,7 @@ function comp(){
 					if (z < 0) z = 0;
 					z /= 100;
 					
-					FL[v].FIBuy = (all - tmp*z)/1000;
+					FL[v].FIBuy = (all - tmp*z)/100000*100;
 					
 				}
 			}
@@ -195,7 +210,8 @@ function comp(){
 	for(var i=0; i < FL.length; i++) {
 		if (FL[i].FIBuy != -1)
 		{
-		   dt = new Date(FL[i].date).getTime();
+		   dt = new Date(FL[i].date).getTime() + 24*60*60*1000;
+		   //console.log(new Date(dt))
 		   z.push([dt, FL[i].FIBuy])
 		}
 	}
@@ -249,11 +265,15 @@ function createChart() {
             series: {
                 compare: 'percent',
                 showInNavigator: true
-            }
+			},
+			candlestick: {
+				color: '#6c9c46',
+				upColor: '#f3746d'
+			}
         },
 
         tooltip: {
-            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+            pointFormat: '<span style="color:{series.color}"><b>{series.name}</b>: <b>{point.y}</b></span><br/>',
             valueDecimals: 2,
             split: true
         },
@@ -285,18 +305,19 @@ function success(data) {
 
 function success2(data) {
 	data2 = JSON.parse(data.contents);
-	PC = data2.data.content.rawContent;
+	//console.log(data2);
+	PC = data2.data.content.rawContent.day;
 	var name = gArr[gIdx];
 	z=new Array();
-	for(var i=0; i < data2.data.content.rawContent.length; i++) {
-	   dt = new Date(data2.data.content.rawContent[i].date)
-	   z.push([dt, data2.data.content.rawContent[i].close])
+	for(var i=0; i < data2.data.content.rawContent.day.length; i++) {
+	   dt = new Date(data2.data.content.rawContent.day[i].date);
+	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close])
 	}
 	//console.log(z);
     seriesOptions[gIdx] = {
+		type: 'candlestick',
         name: name,
         data: z,
-		color: gColor[gIdx],
     };
 
     // As we're loading the data asynchronously, we don't know what order it
