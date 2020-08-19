@@ -13,9 +13,10 @@ function startGet(id){
 	{
 	  return;
 	}
-	enable = 1;
+	enable = 0;
 	$("#search").css("cursor","not-allowed");
 	$("#search").css("background-color","gray");
+	$("#search").removeClass("sehover");
 	seriesCounter = 0;
 	gIdx = 0;
 	gStockId = id;
@@ -201,9 +202,10 @@ function comp(){
     }
 	gIdx += 1;
 	//console.log("Pdone");
-    enable = 0;
+    enable = 1;
     $("#search").css("cursor","pointer");
     $("#search").css("background-color","white");
+    $("#search").addClass("sehover");
 }
 
 var gColor = ["#000000", "#ff0000"];
