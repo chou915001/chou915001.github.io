@@ -17,6 +17,7 @@ function startGet(id){
 	$("#search").css("cursor","not-allowed");
 	$("#search").css("background-color","gray");
 	$("#search").removeClass("sehover");
+	$("#search").text("Loading...");
 	seriesCounter = 0;
 	gIdx = 0;
 	gStockId = id;
@@ -205,7 +206,8 @@ function comp(){
     enable = 1;
     $("#search").css("cursor","pointer");
     $("#search").css("background-color","white");
-    $("#search").addClass("sehover");
+    $("#search").addClass("sehover:hover");
+    $("#search").text("Search");
 }
 
 var gColor = ["#000000", "#ff0000"];
