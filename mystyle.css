@@ -4,9 +4,13 @@
   font-family: "Arial", "Roboto Condensed", sans-serif, "微軟正黑體";
 }
 
+.lv1 {
+  font-size: 1.5rem;
+}
 
 .in1 {
   display: inline;
+  line-height: auto;
 }
 
 .outside {
