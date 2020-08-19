@@ -13,6 +13,10 @@
 	margin: 20px;
 }
 
+.pic {
+	border: solid 1px black
+}
+
 #buylist {
   display: inline-block;
   padding: 20px;
