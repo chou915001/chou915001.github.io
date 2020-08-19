@@ -8,7 +8,7 @@ gName = "";
 gSecondName = "";
 enable = 1;
 
-$("#search").mouseover(function(){
+$("#search").hover(function(){
   if (enable == 1)
   {
     $("#search").css("background-color","#A7C9E7");
