@@ -8,10 +8,17 @@ gName = "";
 gSecondName = "";
 enable = 1;
 
-$("#search").hover(function(){
+$("#search").mouseenter(function(){
   if (enable == 1)
   {
     $("#search").css("background-color","#A7C9E7");
+  }
+});
+
+$("#search").mouseleave(function(){
+  if (enable == 1)
+  {
+    $("#search").css("background-color","white");
   }
 });
 
