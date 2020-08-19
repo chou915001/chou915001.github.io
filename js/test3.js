@@ -8,6 +8,13 @@ gName = "";
 gSecondName = "";
 enable = 1;
 
+$("#search").mouseover(function(){
+  if (enable == 1)
+  {
+    $("#search").css("background-color","#A7C9E7");
+  }
+});
+
 function startGet(id){
 	if (enable == 0)
 	{
@@ -16,7 +23,6 @@ function startGet(id){
 	enable = 0;
 	$("#search").css("cursor","not-allowed");
 	$("#search").css("background-color","gray");
-	$("#search").removeClass("sehover");
 	$("#search").text("Loading...");
 	seriesCounter = 0;
 	gIdx = 0;
@@ -206,7 +212,6 @@ function comp(){
     enable = 1;
     $("#search").css("cursor","pointer");
     $("#search").css("background-color","white");
-    $("#search").addClass("sehover");
     $("#search").text("Search");
 }
 
