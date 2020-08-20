@@ -344,9 +344,10 @@ function createChart() {
 			  points.forEach(function(point, index) {
 				  if (index == 0) {
 					  tooltipArray.push('<br><b>開盤: </b>' + point.point.open +
-									'<br><b>最高: </b>' + point.point.high +
-									'<br><b>最低: </b>' + point.point.low +
-									'<br><b>收盤: </b>' + point.point.close);
+					'<br><b>最高: </b>' + point.point.high +
+					'<br><b>最低: </b>' + point.point.low +
+					'<br><b>收盤: </b>' + point.point.close +
+					'<br><b>漲跌: </b>' + (point.point.close - point.point.open) + '<b> (' + formatFloat((point.point.close - point.point.open)*100/point.point.open,2) +'%)</b>');
 				  }
 				 else
 				 {
