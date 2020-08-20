@@ -368,7 +368,7 @@ function createChart() {
 				  }
 				 else
 				 {
-					 tooltipArray.push('<b>' + gLabel[index] + ': </b>' + point.y + '%');
+					 tooltipArray.push('<b>' + gLabel[index] + ': </b>' + formatFloat(point.y,2) + '%');
 				 }
 			  });
 
