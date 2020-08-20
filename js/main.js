@@ -345,6 +345,8 @@ function createChart() {
 				title: {
 					text: '內部持股變化'
 				},
+				min: -10,
+				max: 10,
 				top: '80%',
 				height: '15%',
 				offset: 0,
