@@ -1,3 +1,4 @@
+// init
 gStockId = 0;
 FL=[];
 SP=[];
@@ -7,38 +8,21 @@ gArr=[];
 gName = "";
 gSecondName = "";
 enable = 1;
+var seriesOptions = [];
+gLabel = ['', '內部持股比例', '內部持股變化'];
+
+// load
 $("#fname").focus();
-$("#fname").keypress(function(e){
-	code = (e.keyCode ? e.keyCode : e.which);
-	if (code == 13)
-	{
-		$( "#search" ).trigger( "click" );
-	}
-});
 
-$("#fname").click(function(){
-	$("#fname").val("");
-  });
-
-$("#search").mouseenter(function(){
-  if (enable == 1)
-  {
-    $("#search").css("background-color","#A7C9E7");
-  }
-});
-
-$("#search").mouseleave(function(){
-  if (enable == 1)
-  {
-    $("#search").css("background-color","white");
-  }
-});
-
+// step1. click trigger stock price
 function startGet(id){
 	if (enable == 0)
 	{
-	  return;
+		return;
 	}
+	FL=[];
+	SP=[];
+	PC=[];
 	enable = 0;
 	$("#fname").val("");
 	$("#search").css("cursor","not-allowed");
@@ -47,18 +31,33 @@ function startGet(id){
 	seriesCounter = 0;
 	gIdx = 0;
 	gStockId = id;
-	getIDName(id);
 	Highcharts.getJSON(
 		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000085?symbol_id=' + id,
-		success2
+		success
 	);
-	FL=[];
-	SP=[];
-	PC=[];
-	
-	
 }
 
+// step2. stock price ajax callback trigger get stock info
+function success(data) {
+	data2 = JSON.parse(data.contents);
+	//console.log(data2);
+	PC = data2.data.content.rawContent.day;
+	z=new Array();
+	for(var i=0; i < data2.data.content.rawContent.day.length; i++) {
+	   dt = new Date(data2.data.content.rawContent.day[i].date);
+	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close])
+	}
+	gLabel[0] = res2.data.content.rawContent.shortName;
+	//console.log(z);
+	seriesOptions[0] = {
+		type: 'candlestick',
+		name: res2.data.content.rawContent.shortName,
+		data: z,
+	};
+	getIDName(id);
+}
+
+// step3. stock info ajax callback trigger get F operation
 function getIDName(id){
 	$.ajax(
 	  {
@@ -73,6 +72,7 @@ function getIDName(id){
 	)
 }
 
+// step4. F operation ajax callback trigger get spread
 function getF(id){
 	$.ajax(
 	  {
@@ -88,6 +88,7 @@ function getF(id){
 	)
 }
 
+// step5. get spread ajax callback trigger computer result
 function getSpread(id){
 	$.ajax(
 	  {
@@ -105,44 +106,7 @@ function getSpread(id){
 	
 }
 
-function getPrice(Arr, symb){
-	
-	for (var i = 0; i < Arr.length; i++)
-	{
-		if( (new Date(Arr[i].date).getTime() == new Date(symb).getTime()))
-		{
-			return Arr[i].close;
-		}
-	}
-	return -1;
-}
-
-function getIdx(Arr, symb, type){
-	
-	for (var i = 0; i < Arr.length; i++)
-	{
-		if( (new Date(Arr[i].date).getTime() == new Date(symb).getTime()))
-		{
-			if (type == 1) {
-				return i;
-			}
-			return Arr[i].total;
-		}
-	}
-	return -1;
-}
-
-Date.prototype.addDays = function(days) {
-  this.setDate(this.getDate() + days);
-  return this;
-}
-
-function ClearTmp(){
-	for (var i = 0; i < FL.length; i++){
-		FL[i].FIBuy = -1;
-	}
-}
-
+// step6. computer result
 function comp(){
 	ClearTmp();
 	day_arr = [-1, -2, -3, -4, -7];
@@ -237,8 +201,8 @@ function comp(){
 		{
 		   dt = new Date(FL[i].date).getTime() + 24*60*60*1000;
 		   //console.log(new Date(dt))
-		   z.push([dt, FL[i].FIBuy]);
-		   ils_volume.push([dt, FL[i].FISell]);
+		   z.push([dt, formatFloat(FL[i].FIBuy,2)]);
+		   ils_volume.push([dt, formatFloat(FL[i].FISell,2)]);
 		}
 	}
 
@@ -266,15 +230,54 @@ function comp(){
     $("#search").text("Search");
 }
 
-var seriesOptions = [],
-    seriesCounter = 0;
+
+// module or function
+
+function getPrice(Arr, symb){
 	
+	for (var i = 0; i < Arr.length; i++)
+	{
+		if( (new Date(Arr[i].date).getTime() == new Date(symb).getTime()))
+		{
+			return Arr[i].close;
+		}
+	}
+	return -1;
+}
+
+function getIdx(Arr, symb, type){
+	
+	for (var i = 0; i < Arr.length; i++)
+	{
+		if( (new Date(Arr[i].date).getTime() == new Date(symb).getTime()))
+		{
+			if (type == 1) {
+				return i;
+			}
+			return Arr[i].total;
+		}
+	}
+	return -1;
+}
+
+Date.prototype.addDays = function(days) {
+  this.setDate(this.getDate() + days);
+  return this;
+}
+
+function ClearTmp(){
+	for (var i = 0; i < FL.length; i++){
+		FL[i].FIBuy = -1;
+	}
+}
+
 function formatFloat(num, pos)
 {
   var size = Math.pow(10, pos);
   return Math.round(num * size) / size;
 }
 
+// highcharts
 function createChart() {
 
     Highcharts.stockChart('container', {
@@ -347,11 +350,11 @@ function createChart() {
 					'<br><b>最高: </b>' + point.point.high +
 					'<br><b>最低: </b>' + point.point.low +
 					'<br><b>收盤: </b>' + point.point.close +
-					'<br><b>漲跌: </b>' + (point.point.close - point.point.open) + '<b> (' + formatFloat((point.point.close - point.point.open)*100/point.point.open,2) +'%)</b>');
+					'<br><b>漲跌: </b>' + formatFloat((point.point.close - point.point.open),2) + '<b> (' + formatFloat((point.point.close - point.point.open)*100/point.point.open,2) +'%)</b>');
 				  }
 				 else
 				 {
-					 tooltipArray.push('<b>' + gLabel[index] + ': </b>' + point.y);
+					 tooltipArray.push('<b>' + gLabel[index] + ': </b>' + point.y + '%');
 				 }
 			  });
 
@@ -364,44 +367,34 @@ function createChart() {
 }
 
 
-gLabel = ['', '內部持股比例', '內部持股變化'];
 
-function success(data) {
-    var name = this.url.match(/(msft|aapl|goog)/)[0].toUpperCase();
-    var i = names.indexOf(name);
-    seriesOptions[i] = {
-        name: name,
-        data: data
-    };
-
-    // As we're loading the data asynchronously, we don't know what order it
-    // will arrive. So we keep a counter and create the chart when all the data is loaded.
-    seriesCounter += 1;
-
-    if (seriesCounter === names.length) {
-        createChart();
-    }
-}
-
-
-
-function success2(data) {
-	data2 = JSON.parse(data.contents);
-	//console.log(data2);
-	PC = data2.data.content.rawContent.day;
-	z=new Array();
-	for(var i=0; i < data2.data.content.rawContent.day.length; i++) {
-	   dt = new Date(data2.data.content.rawContent.day[i].date);
-	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close])
+// ------------------
+// listener
+$("#fname").keypress(function(e){
+	code = (e.keyCode ? e.keyCode : e.which);
+	if (code == 13)
+	{
+		$( "#search" ).trigger( "click" );
 	}
-	gLabel[0] = res2.data.content.rawContent.shortName;
-	//console.log(z);
-    seriesOptions[0] = {
-		type: 'candlestick',
-        name: res2.data.content.rawContent.shortName,
-        data: z,
-    };
-}
+});
+
+$("#fname").click(function(){
+	$("#fname").val("");
+  });
+
+$("#search").mouseenter(function(){
+  if (enable == 1)
+  {
+    $("#search").css("background-color","#A7C9E7");
+  }
+});
+
+$("#search").mouseleave(function(){
+  if (enable == 1)
+  {
+    $("#search").css("background-color","white");
+  }
+});
 
 $("#search").click(function(){
 	startGet($("#fname").val());
