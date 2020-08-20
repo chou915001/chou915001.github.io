@@ -348,7 +348,7 @@ function createChart() {
 				top: '80%',
 				height: '15%',
 				offset: 0,
-				//lineWidth: 2
+				lineWidth: 2
 			}],
 
         plotOptions: {
