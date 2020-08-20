@@ -342,7 +342,16 @@ function createChart() {
 				tooltipArray = ['<b>' + Highcharts.dateFormat('%Y/%m/%d', this.x) + '</b>']
 
 			  points.forEach(function(point, index) {
-				tooltipArray.push('<b>' + gLabel[index] + ': </b>' + point.y);
+				  if (index == 0) {
+					  tooltipArray.push('<br><b>開盤: </b>' + point.point.open +
+									'<br><b>最高: </b>' + point.point.high +
+									'<br><b>最低: </b>' + point.point.low +
+									'<br><b>收盤: </b>' + point.point.close);
+				  }
+				 else
+				 {
+					 tooltipArray.push('<b>' + gLabel[index] + ': </b>' + point.y);
+				 }
 			  });
 
 			  return tooltipArray;
@@ -352,6 +361,7 @@ function createChart() {
         series: seriesOptions
     });
 }
+
 
 gLabel = ['', '內部持股比例', '內部持股變化'];
 
