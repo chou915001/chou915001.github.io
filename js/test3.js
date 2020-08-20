@@ -63,7 +63,7 @@ function getIDName(id){
 		success: function(res){
 		  res2 = JSON.parse(res.contents);
 		  gName = res2.data.content.rawContent.shortName;
-		  gLabel[0] = gname;
+		  gLabel[0] = gName;
 		  gSecondName = res2.data.content.rawContent.endlishShortName;
 		  getF(id);
 		}
