@@ -25,16 +25,12 @@
 }
 
 .searbtn {
+  color: #fff;
+  background-color: #00BC8A;
   margin: 5px;
   padding: 5px;
   padding-right: 10px;
   cursor: pointer;
-  border: solid 1px black;
   border-radius: 2px;
   text-align: center;
 }
-
-.sehover:hover {
-  background-color: #A7C9E7;
-}
-
