@@ -340,7 +340,7 @@ function createChart() {
 			},{
 				labels: {
 					align: 'right',
-					//x: -3
+					x: -3
 				},
 				title: {
 					text: '內部持股變化'
