@@ -27,7 +27,7 @@ function startGet(id){
 	enable = 0;
 	$("#fname").val("");
 	$("#search").css("cursor","not-allowed");
-	$("#search").css("background-color","gray");
+	$("#search").css("background-color","#D1D8DD");
 	$("#search").css("color","white");
 	$("#search").text("Loading...");
 	seriesCounter = 0;
