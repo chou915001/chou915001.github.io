@@ -28,6 +28,7 @@ function startGet(id){
 	$("#fname").val("");
 	$("#search").css("cursor","not-allowed");
 	$("#search").css("background-color","gray");
+	$("#search").css("color","white");
 	$("#search").text("Loading...");
 	seriesCounter = 0;
 	gIdx = 0;
@@ -48,10 +49,7 @@ function success(data) {
 	    })(jQuery);
 	} catch(err) {
 	    $("#warning").text("股票代碼有誤");
-	    enable = 1;
-	    $("#search").css("cursor","pointer");
-	    $("#search").css("background-color","white");
-	    $("#search").text("Search");
+	    resume();
 	    return;
 	}
 	//PC = data2.data.content.rawContent.day;
@@ -235,14 +233,19 @@ function comp(){
 
     createChart();
     //console.log("Pdone");
-    enable = 1;
-    $("#search").css("cursor","pointer");
-    $("#search").css("background-color","white");
-    $("#search").text("Search");
+    resume();
 }
 
 
 // module or function
+
+function resume(){
+	enable = 1;
+	$("#search").css("cursor","pointer");
+	$("#search").css("background-color","white");
+	$("#search").css("color","black");
+	$("#search").text("Search");
+}
 
 function getPrice(Arr, symb){
 	
