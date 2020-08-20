@@ -399,14 +399,14 @@ $("#fname").click(function(){
 $("#search").mouseenter(function(){
   if (enable == 1)
   {
-    $("#search").css("background-color","#A7C9E7");
+    $("#search").css("background-color","#00D69D");
   }
 });
 
 $("#search").mouseleave(function(){
   if (enable == 1)
   {
-    $("#search").css("background-color","white");
+    $("#search").css("background-color","#00BC8A");
   }
 });
 
