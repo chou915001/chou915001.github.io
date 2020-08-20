@@ -353,7 +353,7 @@ function createChart() {
 
         plotOptions: {
             series: {
-                compare: 'value',
+                compare: 'percent',
                 showInNavigator: true
 			},
 			candlestick: {
