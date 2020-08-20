@@ -41,7 +41,14 @@ function startGet(id){
 function success(data) {
 	data2 = JSON.parse(data.contents);
 	//console.log(data2);
-	PC = data2.data.content.rawContent.day;
+	try { 
+	    (function($) {
+		PC = data2.data.content.rawContent.day;
+	    })(jQuery);
+	} catch(err) {  //We can also throw from try block and catch it here
+	    console.log("err");
+	}
+	//PC = data2.data.content.rawContent.day;
 	z=new Array();
 	for(var i=0; i < data2.data.content.rawContent.day.length; i++) {
 	   dt = new Date(data2.data.content.rawContent.day[i].date);
