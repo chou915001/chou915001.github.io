@@ -20,7 +20,7 @@ function startGet(id){
 	{
 		return;
 	}
-	$("#warning).text("");
+	$("#warning").text("");
 	FL=[];
 	SP=[];
 	PC=[];
