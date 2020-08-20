@@ -46,7 +46,11 @@ function success(data) {
 		PC = data2.data.content.rawContent.day;
 	    })(jQuery);
 	} catch(err) {  //We can also throw from try block and catch it here
-	    console.log("err");
+	    enable = 1;
+	    $("#search").css("cursor","pointer");
+	    $("#search").css("background-color","white");
+	    $("#search").text("Search");
+	    return;
 	}
 	//PC = data2.data.content.rawContent.day;
 	z=new Array();
@@ -228,8 +232,7 @@ function comp(){
     };
 
     createChart();
-	gIdx += 1;
-	//console.log("Pdone");
+    //console.log("Pdone");
     enable = 1;
     $("#search").css("cursor","pointer");
     $("#search").css("background-color","white");
