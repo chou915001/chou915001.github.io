@@ -47,11 +47,9 @@ function success(data) {
 	   dt = new Date(data2.data.content.rawContent.day[i].date);
 	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close])
 	}
-	gLabel[0] = res2.data.content.rawContent.shortName;
 	//console.log(z);
 	seriesOptions[0] = {
 		type: 'candlestick',
-		name: res2.data.content.rawContent.shortName,
 		data: z,
 	};
 	getIDName(id);
@@ -65,6 +63,7 @@ function getIDName(id){
 		success: function(res){
 		  res2 = JSON.parse(res.contents);
 		  gName = res2.data.content.rawContent.shortName;
+		  gLabel[0] = gname;
 		  gSecondName = res2.data.content.rawContent.endlishShortName;
 		  getF(id);
 		}
