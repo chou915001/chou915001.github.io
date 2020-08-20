@@ -47,7 +47,7 @@ function success(data) {
 		PC = data2.data.content.rawContent.day;
 	    })(jQuery);
 	} catch(err) {
-	    $("#warning).text("股票代碼有誤");
+	    $("#warning").text("股票代碼有誤");
 	    enable = 1;
 	    $("#search").css("cursor","pointer");
 	    $("#search").css("background-color","white");
