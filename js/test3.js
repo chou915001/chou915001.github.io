@@ -9,7 +9,7 @@ gName = "";
 gSecondName = "";
 enable = 1;
 var seriesOptions = [];
-gLabel = ['', '內部持股比例', '內部持股變化'];
+gLabel = ['', '內部累計持股', '內部持股變化'];
 
 // load
 $("#fname").focus();
