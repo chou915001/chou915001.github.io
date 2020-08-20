@@ -67,7 +67,6 @@ function getIDName(id){
 		  res2 = JSON.parse(res.contents);
 		  gName = res2.data.content.rawContent.shortName;
 		  gSecondName = res2.data.content.rawContent.endlishShortName;
-		  gArr=[res2.data.content.rawContent.shortName,'ILS'];
 		  getF(id);
 		}
 	  }
@@ -147,9 +146,10 @@ function ClearTmp(){
 function comp(){
 	ClearTmp();
 	day_arr = [-1, -2, -3, -4, -7];
-	
-	for (var i = 0; i < SP.length; i++)
+	sum = 0;
+	for (var i = SP.length -2; i >= 0 ; i--)
 	{
+		
 		tmp = 0;
 		day = new Date(SP[i].date);
 		for (var j = 0; j < 5; j++)
@@ -179,27 +179,51 @@ function comp(){
 				//console.log(tmp);
 				//console.log(v);
 				price = getPrice(PC, day_get);
+				
 				if (price != -1)
 				{
-					var all = 0;
+					var this_week = 0;
+					var this_week_all = 0;
+					var last_week = 0;
+					var last_week_all = 0;
 					var z_value = 0;
 					
 					if (price >= 50)
 					{
-						all = SP[i].data[11].shares + SP[i].data[12].shares + SP[i].data[13].shares + SP[i].data[14].shares;
+						this_week = SP[i].data[11].shares + SP[i].data[12].shares + SP[i].data[13].shares + SP[i].data[14].shares;
 					}
 					else
 					{
-						all = SP[i].data[14].shares;
+						this_week = SP[i].data[14].shares;
 					}
+					this_week_all = SP[i].data[16].shares;
 					
-					z = 75 + SP[i].data[16].shares / 100000000 - 3 * price / 50;
+					if (price >= 50)
+					{
+						last_week = SP[i+1].data[11].shares + SP[i+1].data[12].shares + SP[i+1].data[13].shares + SP[i+1].data[14].shares;
+					}
+					else
+					{
+						last_week = SP[i+1].data[14].shares;
+					}
+					last_week_all = SP[i+1].data[16].shares;
+					
+					z = 75 + SP[i].data[16].shares / 10000000 - 3 * price / 50;
 					if (z > 100) z = 100;
 					if (z < 0) z = 0;
-					z /= 100;
+					z = z / 100;
 					
-					FL[v].FIBuy = (all - tmp*z)/SP[i].data[16].shares*100;
+					ils = formatFloat(((this_week/this_week_all - last_week/last_week_all)*this_week_all - tmp * z)/this_week_all * 100, 2)
 					
+					if (j == 0)
+					{
+						
+						sum += ils;
+						//console.log(sum);
+					}
+					
+					FL[v].FISell = ils;
+					FL[v].FIBuy = sum;
 				}
 			}
 		}
@@ -207,29 +231,33 @@ function comp(){
 	//console.log("done");
 	var name = gArr[gIdx];
 	z=new Array();
+	ils_volume = new Array();
 	for(var i=0; i < FL.length; i++) {
 		if (FL[i].FIBuy != -1)
 		{
 		   dt = new Date(FL[i].date).getTime() + 24*60*60*1000;
 		   //console.log(new Date(dt))
-		   z.push([dt, FL[i].FIBuy])
+		   z.push([dt, FL[i].FIBuy]);
+		   ils_volume.push([dt, FL[i].FISell]);
 		}
 	}
 
-    seriesOptions[gIdx] = {
-		yAxis: gIdx,
-        name: name,
+    seriesOptions[1] = {
+		yAxis: 1,
+        name: "內部持股比例",
         data: z,
-		color: gColor[gIdx],
+		color: "#A34573",
+    };
+	
+	seriesOptions[2] = {
+		yAxis: 1,
+		type: 'column',
+        name: "內部持股變化",
+        data: ils_volume,
+		color: "#5C5C61",
     };
 
-    // As we're loading the data asynchronously, we don't know what order it
-    // will arrive. So we keep a counter and create the chart when all the data is loaded.
-    seriesCounter += 1;
-
-    if (seriesCounter == 2) {
-        createChart();
-    }
+    createChart();
 	gIdx += 1;
 	//console.log("Pdone");
     enable = 1;
@@ -238,10 +266,14 @@ function comp(){
     $("#search").text("Search");
 }
 
-var gColor = ["#000000", "#ff0000"];
-
 var seriesOptions = [],
     seriesCounter = 0;
+	
+function formatFloat(num, pos)
+{
+  var size = Math.pow(10, pos);
+  return Math.round(num * size) / size;
+}
 
 function createChart() {
 
@@ -258,8 +290,37 @@ function createChart() {
         rangeSelector: {
             selected: 4
         },
-
-        yAxis: [{},{}],
+		
+		 xAxis: {
+		  type: 'datetime',
+		  labels: {
+			format: '{value:%Y/%m/%d}',
+		  }
+		},
+		
+        yAxis: [{
+				labels: {
+					align: 'right',
+					x: -3
+				},
+				title: {
+					text: '股價'
+				},
+				height: '60%',
+				lineWidth: 2
+			},{
+				labels: {
+					align: 'right',
+					x: -3
+				},
+				title: {
+					text: '內部持股'
+				},
+				top: '65%',
+				height: '35%',
+				offset: 0,
+				lineWidth: 2
+			}],
 
         plotOptions: {
             series: {
@@ -273,16 +334,26 @@ function createChart() {
         },
 
         tooltip: {
-            pointFormat: '<span style="color:{series.color}"><b>{series.name}</b>: <b>{point.y}</b></span><br/>',
+            //pointFormat: '<span style="color:{series.color}"><b>{series.name}</b>: <b>{point.y}</b></span><br/>',
             valueDecimals: 2,
-            split: true
+            split: true,
+			formatter: function() {
+			  var points = this.points,
+				tooltipArray = ['<b>' + Highcharts.dateFormat('%Y/%m/%d', this.x) + '</b>']
+
+			  points.forEach(function(point, index) {
+				tooltipArray.push('<b>' + gLabel[index] + ': </b>' + point.y);
+			  });
+
+			  return tooltipArray;
+			}
         },
 
         series: seriesOptions
     });
 }
 
-
+gLabel = ['', '內部持股比例', '內部持股變化'];
 
 function success(data) {
     var name = this.url.match(/(msft|aapl|goog)/)[0].toUpperCase();
@@ -307,27 +378,18 @@ function success2(data) {
 	data2 = JSON.parse(data.contents);
 	//console.log(data2);
 	PC = data2.data.content.rawContent.day;
-	var name = gArr[gIdx];
 	z=new Array();
 	for(var i=0; i < data2.data.content.rawContent.day.length; i++) {
 	   dt = new Date(data2.data.content.rawContent.day[i].date);
 	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close])
 	}
+	gLabel[0] = res2.data.content.rawContent.shortName;
 	//console.log(z);
-    seriesOptions[gIdx] = {
+    seriesOptions[0] = {
 		type: 'candlestick',
-        name: name,
+        name: res2.data.content.rawContent.shortName,
         data: z,
     };
-
-    // As we're loading the data asynchronously, we don't know what order it
-    // will arrive. So we keep a counter and create the chart when all the data is loaded.
-    seriesCounter += 1;
-
-    if (seriesCounter == 3) {
-        createChart();
-    }
-	gIdx += 1;
 }
 
 $("#search").click(function(){
