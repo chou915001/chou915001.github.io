@@ -20,6 +20,7 @@ function startGet(id){
 	{
 		return;
 	}
+	$("#warning).text("");
 	FL=[];
 	SP=[];
 	PC=[];
@@ -45,7 +46,8 @@ function success(data) {
 	    (function($) {
 		PC = data2.data.content.rawContent.day;
 	    })(jQuery);
-	} catch(err) {  //We can also throw from try block and catch it here
+	} catch(err) {
+	    $("#warning).text("股票代碼有誤");
 	    enable = 1;
 	    $("#search").css("cursor","pointer");
 	    $("#search").css("background-color","white");
