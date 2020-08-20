@@ -52,7 +52,7 @@ function success(data) {
 		type: 'candlestick',
 		data: z,
 	};
-	getIDName(id);
+	getIDName(gStockId);
 }
 
 // step3. stock info ajax callback trigger get F operation
