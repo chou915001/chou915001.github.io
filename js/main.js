@@ -242,8 +242,8 @@ function comp(){
 function resume(){
 	enable = 1;
 	$("#search").css("cursor","pointer");
-	$("#search").css("background-color","white");
-	$("#search").css("color","black");
+	$("#search").css("background-color","#00BC8A");
+	$("#search").css("color","#fff");
 	$("#search").text("Search");
 }
 
