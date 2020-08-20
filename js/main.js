@@ -340,17 +340,15 @@ function createChart() {
 			},{
 				labels: {
 					align: 'right',
-					x: -3
+					//x: -3
 				},
 				title: {
 					text: '內部持股變化'
 				},
-				min: -10,
-				max: 10,
 				top: '80%',
 				height: '15%',
 				offset: 0,
-				lineWidth: 2
+				//lineWidth: 2
 			}],
 
         plotOptions: {
