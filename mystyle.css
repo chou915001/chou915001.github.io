@@ -6,6 +6,7 @@
 
 .pic{
   border-radius: 3px;	
+  border: solid 1px #0A461A;
 }
 
 .lv1 {
@@ -22,10 +23,6 @@
   display: inline;
   margin: 10px;
   z-index: 1;
-}
-
-.pic {
-	border: solid 1px black
 }
 
 .searbtn {
