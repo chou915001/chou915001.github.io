@@ -29,7 +29,7 @@ function startGet(id){
 	$("#search").css("cursor","not-allowed");
 	$("#search").css("background-color","#D1D8DD");
 	$("#search").css("color","white");
-	$("#search").text("Loading...");
+	$("#search").text(" Loading... ");
 	seriesCounter = 0;
 	gIdx = 0;
 	gStockId = id;
