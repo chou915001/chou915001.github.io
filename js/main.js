@@ -223,8 +223,8 @@ function comp(){
 		color: "#A34573",
     };
 	
-	seriesOptions[2] = {
-		yAxis: 1,
+    seriesOptions[2] = {
+		yAxis: 2,
 		type: 'column',
         name: "內部持股變化",
         data: ils_volume,
@@ -331,10 +331,21 @@ function createChart() {
 					x: -3
 				},
 				title: {
-					text: '內部持股'
+					text: '內部累計持股'
 				},
-				top: '65%',
-				height: '35%',
+				top: '50%',
+				height: '15%',
+				offset: 0,
+				lineWidth: 2
+			},{
+				labels: {
+					align: 'right',
+					x: -3
+				},
+				title: {
+					text: '內部持股變化'
+				},
+				height: '15%',
 				offset: 0,
 				lineWidth: 2
 			}],
