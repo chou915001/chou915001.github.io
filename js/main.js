@@ -244,7 +244,7 @@ function resume(){
 	$("#search").css("cursor","pointer");
 	$("#search").css("background-color","#00BC8A");
 	$("#search").css("color","#fff");
-	$("#search").text("Search");
+	$("#search").text(" Search ");
 }
 
 function getPrice(Arr, symb){
