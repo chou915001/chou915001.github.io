@@ -376,7 +376,7 @@ function createChart() {
 					'<br><b>最高: </b>' + point.point.high +
 					'<br><b>最低: </b>' + point.point.low +
 					'<br><b>收盤: </b>' + point.point.close +
-					'<br><b>漲跌: </b>' + formatFloat((point.point.change),2) + '<b> (' + formatFloat(point.point.change_rate,2) +'%)</b>');
+					'<br><b>漲跌: </b>' + formatFloat((point.point.change),2));
 				  }
 				 else
 				 {
