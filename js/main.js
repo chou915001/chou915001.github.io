@@ -10,6 +10,7 @@ gSecondName = "";
 enable = 1;
 var seriesOptions = [];
 gLabel = ['', '內部累計持股', '內部持股變化'];
+first = [0,0];
 
 // load
 $("#fname").focus();
@@ -139,9 +140,14 @@ function comp(){
 		}
 		
 		day = new Date(SP[i].date);
+		price = 0;
+		//console.log("---vvv---");
 		for (var j = 0; j < 5; j++)
 		{
+
+			
 			day_get = new Date(day);
+			
 			//console.log(day);
 			day_get.addDays(day_arr[j]);
 			//console.log(day_get);
@@ -152,7 +158,11 @@ function comp(){
 				//console.log(FL[v].date);
 				//console.log(tmp);
 				//console.log(v);
-				price = getPrice(PC, day_get);
+				if (j==0){
+					price = getPrice(PC, day_get);
+				}
+				
+				
 				
 				if (price != -1)
 				{
@@ -187,8 +197,8 @@ function comp(){
 					if (z < 0) z = 0;
 					z = z / 100;
 					
-					ils = formatFloat(((this_week/this_week_all - last_week/last_week_all)*this_week_all - tmp * z)/this_week_all * 100, 2)
-					
+					ils = formatFloat(((this_week/this_week_all - last_week/last_week_all)*this_week_all - tmp * z)/this_week_all * 100, 2);
+					//console.log(ils);
 					if (j == 0)
 					{
 						
@@ -196,12 +206,17 @@ function comp(){
 						//console.log(sum);
 					}
 					
-					FL[v].FISell = ils;
-					FL[v].FIBuy = sum;
+					if ( FL[v].FISell == -1)
+					{
+						FL[v].FISell = ils;
+						FL[v].FIBuy = sum;
+					}
+					
 				}
 			}
 		}
 	}
+	//console.log(FL[1030]);
 	//console.log("done");
 	var name = gArr[gIdx];
 	z=new Array();
@@ -212,15 +227,17 @@ function comp(){
 		   dt = new Date(FL[i].date).getTime() + 24*60*60*1000;
 		   //console.log(new Date(dt))
 		   z.push([dt, formatFloat(FL[i].FIBuy,2)]);
+		   //console.log(formatFloat(FL[i].FISell,2));
 		   ils_volume.push([dt, formatFloat(FL[i].FISell,2)]);
 		}
 	}
 
     seriesOptions[1] = {
 		yAxis: 1,
+		type: 'area',
         name: "內部持股比例",
         data: z,
-		color: "#A34573",
+		color: "#E4BA6B",
     };
 	
     seriesOptions[2] = {
@@ -282,6 +299,7 @@ Date.prototype.addDays = function(days) {
 function ClearTmp(){
 	for (var i = 0; i < FL.length; i++){
 		FL[i].FIBuy = -1;
+		FL[i].FISell = -1;
 	}
 }
 
@@ -353,12 +371,14 @@ function createChart() {
 
         plotOptions: {
             series: {
-                compare: 'value',
+                //compare: 'value',
                 showInNavigator: true
 			},
 			candlestick: {
 				color: '#6c9c46',
-				upColor: '#f3746d'
+				upColor: '#f3746d',
+				lineColor: '#6c9c46',
+				upLineColor: '#f3746d'
 			}
         },
 
