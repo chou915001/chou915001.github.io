@@ -56,7 +56,7 @@ function success(data) {
 	z=new Array();
 	for(var i=0; i < data2.data.content.rawContent.day.length; i++) {
 	   dt = new Date(data2.data.content.rawContent.day[i].date);
-	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close])
+	   z.push([dt.addDays(1), data2.data.content.rawContent.day[i].open, data2.data.content.rawContent.day[i].high, data2.data.content.rawContent.day[i].low, data2.data.content.rawContent.day[i].close, data2.data.content.rawContent.day[i].change, data2.data.content.rawContent.day[i].change_rate])
 	}
 	//console.log(z);
 	seriesOptions[0] = {
@@ -376,7 +376,7 @@ function createChart() {
 					'<br><b>最高: </b>' + point.point.high +
 					'<br><b>最低: </b>' + point.point.low +
 					'<br><b>收盤: </b>' + point.point.close +
-					'<br><b>漲跌: </b>' + formatFloat((point.point.close - point.point.open),2) + '<b> (' + formatFloat((point.point.close - point.point.open)*100/point.point.open,2) +'%)</b>');
+					'<br><b>漲跌: </b>' + formatFloat((point.point.change),2) + '<b> (' + formatFloat(point.point.change_rate,2) +'%)</b>');
 				  }
 				 else
 				 {
