@@ -48,7 +48,7 @@ function success(data) {
 		PC = data2.data.content.rawContent.day;
 	    })(jQuery);
 	} catch(err) {
-	    $("#warning").text("代碼有誤");
+	    $("#warning").text("代碼錯誤");
 	    resume();
 	    return;
 	}
