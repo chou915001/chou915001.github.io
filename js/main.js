@@ -331,6 +331,7 @@ function createChart() {
 		
 		 xAxis: {
 		  type: 'datetime',
+		  maxZoom: 8 * 35 * 24 * 3600000,
 		  labels: {
 			format: '{value:%Y/%m/%d}',
 		  }
