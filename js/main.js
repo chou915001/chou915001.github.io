@@ -127,10 +127,12 @@ function comp(){
 		
 		tmp = 0;
 		day = new Date(SP[i].date);
+		diff = 0;
 		for (var j = 0; j < 5; j++)
 		{
 			day_get = new Date(day);
-			
+			diff = 5 - day_get.getDay();
+			day_get.addDays(diff);
 			day_get.addDays(day_arr[j]);
 			var v = getIdx(FL, day_get, 2);
 			if (v != -1)
@@ -147,9 +149,10 @@ function comp(){
 
 			
 			day_get = new Date(day);
-			
+			day_get.addDays(diff);
 			//console.log(day);
 			day_get.addDays(day_arr[j]);
+			
 			//console.log(day_get);
 			var v = getIdx(FL, day_get, 1);
 			//console.log(v);
