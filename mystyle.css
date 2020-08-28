@@ -36,3 +36,8 @@
   text-align: center;
   border-radius: 6px;
 }
+
+test2::selection {
+	background: #1F65DE;
+	color: white;
+}
