@@ -35,7 +35,7 @@ function startGet(id){
 	gIdx = 0;
 	gStockId = id;
 	Highcharts.getJSON(
-		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000085?symbol_id=' + id,
+		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000099?symbol_id=' + id,
 		success
 	);
 }
@@ -127,12 +127,10 @@ function comp(){
 		
 		tmp = 0;
 		day = new Date(SP[i].date);
-		diff = 0;
 		for (var j = 0; j < 5; j++)
 		{
 			day_get = new Date(day);
-			diff = 5 - day_get.getDay();
-			day_get.addDays(diff);
+			
 			day_get.addDays(day_arr[j]);
 			var v = getIdx(FL, day_get, 2);
 			if (v != -1)
@@ -149,10 +147,9 @@ function comp(){
 
 			
 			day_get = new Date(day);
-			day_get.addDays(diff);
+			
 			//console.log(day);
 			day_get.addDays(day_arr[j]);
-			
 			//console.log(day_get);
 			var v = getIdx(FL, day_get, 1);
 			//console.log(v);
@@ -331,7 +328,6 @@ function createChart() {
 		
 		 xAxis: {
 		  type: 'datetime',
-		  maxZoom: 8 * 35 * 24 * 3600000,
 		  labels: {
 			format: '{value:%Y/%m/%d}',
 		  }
