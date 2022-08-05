@@ -41,7 +41,7 @@ function startGet(id){
 	gIdx = 0;
 	gStockId = id;
 	Highcharts.getJSON(
-		'https://www.fugle.tw/api/v2/data/contents/FCNT000099?symbol_id=' + id,
+		'https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000099?symbol_id=' + id,
 		success
 	);
 }
@@ -84,7 +84,7 @@ function success(data) {
 function getIDName(id){
 	$.ajax(
 	  {
-		url:"https://www.fugle.tw/api/v2/data/contents/FCNT000001?symbol_id=" + id,
+		url:"https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000001?symbol_id=" + id,
 		success: function(res){
 		  //res2 = JSON.parse(res.contents);
 		  //console.log(res);
@@ -104,7 +104,7 @@ function getIDName(id){
 function getF(id){
 	$.ajax(
 	  {
-		url:"https://www.fugle.tw/api/v2/data/contents/FCNT000005?symbol_id=" + id,
+		url:"https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000005?symbol_id=" + id,
 		success: function(res){
 		  //console.log("F");
 		  //console.log(res.data.content.rawContent);
@@ -121,7 +121,7 @@ function getF(id){
 function getSpread(id){
 	$.ajax(
 	  {
-		url:"https://www.fugle.tw/api/v2/data/contents/FCNT000022?symbol_id=" + id,
+		url:"https://api.allorigins.win/get?url=https://www.fugle.tw/api/v2/data/contents/FCNT000022?symbol_id=" + id,
 		success: function(res){
 		  //console.log("S");
 		  //console.log(res);
